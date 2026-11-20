@@ -1,0 +1,318 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/dungeon_board.gd" id="2_board"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.08, 0.08, 0.1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.92, 0.92, 0.87, 0.85)
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.11, 0.11, 0.14, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.92, 0.92, 0.87, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+bg_color = Color(0.92, 0.92, 0.87, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.92, 0.92, 0.87, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0509804, 0.0509804, 0.0627451, 1)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HudPanel" type="PanelContainer" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="HudVBox" type="VBoxContainer" parent="Margin/VBox/HudPanel"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TopRow" type="HBoxContainer" parent="Margin/VBox/HudPanel/HudVBox"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Margin/VBox/HudPanel/HudVBox/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_font_sizes/font_size = 15
+text = "ONEBIT DUNGEON - NIVEL 1"
+
+[node name="TopRestartButton" type="Button" parent="Margin/VBox/HudPanel/HudVBox/TopRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 26)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "↻"
+
+[node name="StatsRow" type="HBoxContainer" parent="Margin/VBox/HudPanel/HudVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HpLabel" type="Label" parent="Margin/VBox/HudPanel/HudVBox/StatsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.96, 0.38, 0.38, 1)
+theme_override_font_sizes/font_size = 13
+text = "HP 12/12"
+
+[node name="AtkLabel" type="Label" parent="Margin/VBox/HudPanel/HudVBox/StatsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "ATK 2"
+
+[node name="CoinLabel" type="Label" parent="Margin/VBox/HudPanel/HudVBox/StatsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.96, 0.78, 0.24, 1)
+theme_override_font_sizes/font_size = 13
+text = "ORO 0"
+
+[node name="KeyLabel" type="Label" parent="Margin/VBox/HudPanel/HudVBox/StatsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "LLAVE: NO"
+
+[node name="DungeonBoard" type="Control" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("2_board")
+
+[node name="LogPanel" type="PanelContainer" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="LogLabel" type="Label" parent="Margin/VBox/LogPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "Desliza o usa el D-Pad para explorar."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ControlsRow" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="DPad" type="GridContainer" parent="Margin/VBox/ControlsRow"]
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 3
+
+[node name="Spacer1" type="Control" parent="Margin/VBox/ControlsRow/DPad"]
+custom_minimum_size = Vector2(52, 46)
+layout_mode = 2
+
+[node name="UpButton" type="Button" parent="Margin/VBox/ControlsRow/DPad"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 46)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "▲"
+
+[node name="Spacer2" type="Control" parent="Margin/VBox/ControlsRow/DPad"]
+custom_minimum_size = Vector2(52, 46)
+layout_mode = 2
+
+[node name="LeftButton" type="Button" parent="Margin/VBox/ControlsRow/DPad"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 46)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "◀"
+
+[node name="WaitButton" type="Button" parent="Margin/VBox/ControlsRow/DPad"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 46)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.8, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "•"
+
+[node name="RightButton" type="Button" parent="Margin/VBox/ControlsRow/DPad"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 46)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "▶"
+
+[node name="Spacer3" type="Control" parent="Margin/VBox/ControlsRow/DPad"]
+custom_minimum_size = Vector2(52, 46)
+layout_mode = 2
+
+[node name="DownButton" type="Button" parent="Margin/VBox/ControlsRow/DPad"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 46)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "▼"
+
+[node name="Spacer4" type="Control" parent="Margin/VBox/ControlsRow/DPad"]
+custom_minimum_size = Vector2(52, 46)
+layout_mode = 2
+
+[node name="ActionButtons" type="VBoxContainer" parent="Margin/VBox/ControlsRow"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+
+[node name="PotionButton" type="Button" parent="Margin/VBox/ControlsRow/ActionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 54)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.85, 0.96, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "POCIÓN (1)"
+
+[node name="HintLabel" type="Label" parent="Margin/VBox/ControlsRow/ActionButtons"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.65, 0.7, 1)
+theme_override_font_sizes/font_size = 11
+text = "También puedes\ndeslizar en el mapa"
+horizontal_alignment = 1
+
+[node name="EndOverlay" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -135.0
+offset_top = -90.0
+offset_right = 135.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="OverlayVBox" type="VBoxContainer" parent="EndOverlay"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="EndTitle" type="Label" parent="EndOverlay/OverlayVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "¡NIVEL COMPLETADO!"
+horizontal_alignment = 1
+
+[node name="EndStats" type="Label" parent="EndOverlay/OverlayVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "Turnos: 0 | Oro: 0"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="EndOverlay/OverlayVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "JUGAR DE NUEVO"

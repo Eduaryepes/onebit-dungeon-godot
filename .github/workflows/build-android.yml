@@ -1,0 +1,98 @@
+name: Build Android APK (Godot 4.3)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: "4.3"
+  GODOT_RELEASE_TAG: "4.3-stable"
+  EXPORT_NAME: "onebit-dungeon-debug.apk"
+
+jobs:
+  test-and-build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Cache Godot 4.3 binary and export templates
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.local/bin/godot
+            ~/.local/share/godot/export_templates/4.3.stable
+          key: godot-${{ env.GODOT_RELEASE_TAG }}-linux-android-v1
+
+      - name: Install Godot 4.3 & Android export templates
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.local/bin ~/.local/share/godot/export_templates/4.3.stable /tmp/godot
+
+          echo "Downloading Godot ${{ env.GODOT_RELEASE_TAG }}..."
+          curl -fSL -o /tmp/godot/godot.zip \
+            "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_RELEASE_TAG }}/Godot_v${{ env.GODOT_RELEASE_TAG }}_linux.x86_64.zip"
+          unzip -q /tmp/godot/godot.zip -d /tmp/godot
+          mv /tmp/godot/Godot_v${{ env.GODOT_RELEASE_TAG }}_linux.x86_64 ~/.local/bin/godot
+          chmod +x ~/.local/bin/godot
+
+          echo "Downloading Godot export templates..."
+          curl -fSL -o /tmp/godot/templates.tpz \
+            "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_RELEASE_TAG }}/Godot_v${{ env.GODOT_RELEASE_TAG }}_export_templates.tpz"
+          unzip -q /tmp/godot/templates.tpz -d /tmp/godot/tpl
+          mv /tmp/godot/tpl/templates/* ~/.local/share/godot/export_templates/4.3.stable/
+          rm -rf /tmp/godot
+
+      - name: Pre-heat Godot project import cache
+        run: |
+          ~/.local/bin/godot --headless --import --quit --path .
+
+      - name: Run automated headless tests
+        run: |
+          ~/.local/bin/godot --headless --path . --script res://tests/run_tests.gd
+
+      - name: Generate Android debug keystore & configure Godot editor settings
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.android ~/.config/godot build
+
+          keytool -keyalg RSA -genkeypair -alias androiddebugkey \
+            -keypass android -keystore ~/.android/debug.keystore \
+            -storepass android -dname "CN=Android Debug,O=Android,C=US" \
+            -validity 9999 -deststoretype pkcs12
+
+          cat > ~/.config/godot/editor_settings-4.3.tres <<EOF
+          [gd_resource type="EditorSettings" format=3]
+
+          [resource]
+          export/android/android_sdk_path = "${ANDROID_HOME}"
+          export/android/java_sdk_path = "${JAVA_HOME}"
+          export/android/debug_keystore = "${HOME}/.android/debug.keystore"
+          export/android/debug_keystore_user = "androiddebugkey"
+          export/android/debug_keystore_pass = "android"
+          EOF
+
+      - name: Export Android Debug APK
+        run: |
+          set -euo pipefail
+          ~/.local/bin/godot --headless --verbose --path . --export-debug "Android" "build/${{ env.EXPORT_NAME }}"
+          ls -lh "build/${{ env.EXPORT_NAME }}"
+
+      - name: Upload Android APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: onebit-dungeon-android-apk
+          path: build/${{ env.EXPORT_NAME }}
+          if-no-files-found: error

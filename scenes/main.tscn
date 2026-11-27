@@ -85,11 +85,24 @@ theme_override_constants/separation = 4
 layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="Margin/VBox/HudPanel/HudVBox/TopRow"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
-theme_override_font_sizes/font_size = 15
-text = "ONEBIT DUNGEON - NIVEL 1"
+theme_override_font_sizes/font_size = 14
+text = "NV 1/5 • CATACUMBAS"
+
+[node name="MuteButton" type="Button" parent="Margin/VBox/HudPanel/HudVBox/TopRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 26)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "SFX"
 
 [node name="TopRestartButton" type="Button" parent="Margin/VBox/HudPanel/HudVBox/TopRow"]
 unique_name_in_owner = true
@@ -246,15 +259,27 @@ layout_mode = 2
 [node name="ActionButtons" type="VBoxContainer" parent="Margin/VBox/ControlsRow"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
+
+[node name="WeaponButton" type="Button" parent="Margin/VBox/ControlsRow/ActionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 46)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.86, 0.45, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "ESPADA (2)"
 
 [node name="PotionButton" type="Button" parent="Margin/VBox/ControlsRow/ActionButtons"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 54)
+custom_minimum_size = Vector2(128, 46)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.85, 0.96, 1)
 theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
@@ -263,8 +288,8 @@ text = "POCIÓN (1)"
 [node name="HintLabel" type="Label" parent="Margin/VBox/ControlsRow/ActionButtons"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.65, 0.65, 0.7, 1)
-theme_override_font_sizes/font_size = 11
-text = "También puedes\ndeslizar en el mapa"
+theme_override_font_sizes/font_size = 10
+text = "Desliza en el mapa\n[Q] Cambiar arma"
 horizontal_alignment = 1
 
 [node name="EndOverlay" type="PanelContainer" parent="."]
@@ -276,23 +301,23 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -135.0
-offset_top = -90.0
-offset_right = 135.0
-offset_bottom = 90.0
+offset_left = -142.0
+offset_top = -105.0
+offset_right = 142.0
+offset_bottom = 105.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="OverlayVBox" type="VBoxContainer" parent="EndOverlay"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 alignment = 1
 
 [node name="EndTitle" type="Label" parent="EndOverlay/OverlayVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 19
 text = "¡NIVEL COMPLETADO!"
 horizontal_alignment = 1
 
@@ -300,18 +325,32 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 text = "Turnos: 0 | Oro: 0"
 horizontal_alignment = 1
 
+[node name="NextLevelButton" type="Button" parent="EndOverlay/OverlayVBox"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(190, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.98, 0.85, 0.30, 1)
+theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "SIGUIENTE NIVEL ▶"
+
 [node name="RestartButton" type="Button" parent="EndOverlay/OverlayVBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 44)
+custom_minimum_size = Vector2(190, 42)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
 theme_override_colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
